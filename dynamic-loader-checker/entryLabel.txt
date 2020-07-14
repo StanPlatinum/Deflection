@@ -1,0 +1,5 @@
+enclave_main
+puts
+exit
+CFICheck
+instrument_function_get_time

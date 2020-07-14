@@ -1,0 +1,8 @@
+TicksToFracSecs
+tickamount
+malloc
+free
+sprintf
+puts
+exit
+enclave_exit
