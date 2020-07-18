@@ -1,5 +1,5 @@
-LLVM_PATH = /home/liuweijie/proofGen
-Our_AS_Path = /home/liuweijie/llvm-mc
+LLVM_PATH = /home/dajiejie/proofGen
+Our_AS_Path = /home/dajiejie/llvm-mc
 
 CC4AS = $(Our_AS_Path)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Welcome to S(gx)elf-Respect!"
+echo "Welcome to CAT-SGX/S(gx)elf-Respect!"
 
 Curr_Path=`pwd`
 echo "Current Path: "$Curr_Path
@@ -22,7 +22,7 @@ echo "Install Path: "$Install_Path
 if [ ! -d "./linux-sgx" ]
 then
 	echo "Building SGXSDK..."
-	git clone https://github.com/SecInTheShell/linux-sgx.git
+	git clone https://github.com/StanPlatinum/linux-sgx.git
 	cd linux-sgx
 	SGXSDK_Source_Path=`pwd`
 	cd ..
@@ -34,7 +34,7 @@ SGXSDK_Source_Path=`pwd`"/linux-sgx"
 if [ ! -d "./elfutils" ]
 then
 	echo "Building Libelf..."
-	git clone https://github.com/SecInTheShell/elfutils.git
+	git clone https://github.com/StanPlatinum/elfutils.git
 	cd elfutils
 	Libelf_Path=`pwd`
 	autoheader
@@ -60,7 +60,7 @@ echo "Libelf Path: "$Libelf_Path
 if [ ! -d "./capstone" ]
 then
 	echo "Building Capstone..."
-	git clone https://github.com/SecInTheShell/capstone.git
+	git clone https://github.com/StanPlatinum/capstone.git
 	cd capstone
 	Capstone_Path=`pwd`
 	echo "Capstone Path: "$Capstone_Path
@@ -85,14 +85,14 @@ echo "Capstone Path: "$Capstone_Path
 if [ ! -d "./llvm-mc" ]
 then
 	echo "Building LLVM-MC..."
-	git clone https://github.com/SecInTheShell/llvm-mc.git
+	git clone https://github.com/StanPlatinum/llvm-mc.git
 	cd llvm-mc
 	LLVM_MC_Path=`pwd`
 	echo "LLVM-MC Path: "$LLVM_MC_Path
 	mkdir build
 	cd build
 	cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD="X86" -G "Unix Makefiles" ../llvm
-	make -j2
+	make -j4
 	if [ $? -ne 0 ]
 	then
 		echo "LLVM-MC install failed!"
@@ -111,7 +111,7 @@ echo "LLVM-MC Bin Path: "$LLVM_MC_Bin_Path
 if [ ! -d "./proofGen" ]
 then
 	echo "Building ProofGen..."
-	git clone https://github.com/SecInTheShell/proofGen.git
+	git clone https://github.com/StanPlatinum/proofGen.git
 	cd proofGen
 	ProofGen_Path=`pwd`
 	echo "LLVM Path: "$ProofGen_Path
@@ -183,7 +183,7 @@ cat Makefile_header4target Makefile_template4target > Makefile
 rm Makefile_header4target
 make clean-all
 echo "Generating musl-libc"
-cp ../../loader/target-program/musl-libc/lib/libc.a ./musl-libc/lib/libc.a
+cp -r ../../loader/target-program/musl-libc .
 cd ..
 cd sc-resil-tg
 echo "Generating Makefile header..."
@@ -195,7 +195,7 @@ cat Makefile_header4target Makefile_template4target > Makefile
 rm Makefile_header4target
 echo "Generating all including musl-libc"
 make clean-all
-cp ../target-program/musl-libc/lib/libc.a ./musl-libc/lib/libc.a
+cp -r ../target-program/musl-libc .
 cd ../..
 
 

@@ -1,6 +1,6 @@
-SGX_SRC_PATH = /home/liuweijie/linux-sgx
-ELFUTILS_PATH = /home/liuweijie/elfutils
-CAPSTONE_PATH = /home/liuweijie/capstone
+SGX_SRC_PATH = /home/dajiejie/linux-sgx
+ELFUTILS_PATH = /home/dajiejie/elfutils
+CAPSTONE_PATH = /home/dajiejie/capstone
 
 ######## Checker Settings ########
 
