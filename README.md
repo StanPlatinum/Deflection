@@ -25,3 +25,11 @@ The installation paths of other dependencies are in the same directory as cat-sg
 ```
 ./install.sh
 ```
+
+### A Hello World example
+
+```
+cd dynamic-loader-checker
+make
+./app
+```
