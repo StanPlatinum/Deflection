@@ -72,7 +72,14 @@ echo "CC = "$CC4AS > Makefile_header4target
 cat Makefile_header4target Makefile_template4target > Makefile
 rm Makefile_header4target
 make clean
-cd ../..
+
+cd mbedtls
+echo "Generating new Makefile header..."
+rm -f Makefile
+echo "LLVM_MC_PATH = "$LLVM_MC_Path > Makefile_header4https
+cat Makefile_header4https Makefile_template4https > Makefile
+rm Makefile_header4https
+cd ../../..
 
 
 echo "Configuring dynamic-loader-checker..."
@@ -93,7 +100,16 @@ echo "Our_AS_Path = "$LLVM_MC_Path >> Makefile_header4target
 cat Makefile_header4target Makefile_template4target > Makefile
 rm Makefile_header4target
 make clean
-cd ..
+
+cd mbedtls
+echo "Generating new Makefile header..."
+rm -f Makefile
+echo "LLVM_MC_PATH = "$LLVM_MC_Path > Makefile_header4https
+echo "LLVM_PATH = "$ProofGen_Path >> Makefile_header4https
+cat Makefile_header4https Makefile_template4https > Makefile
+rm Makefile_header4https
+cd ../..
+
 cd sc-resil-tg
 echo "Generating new Makefile header..."
 rm -f Makefile
@@ -104,7 +120,13 @@ cat Makefile_header4target Makefile_template4target > Makefile
 rm Makefile_header4target
 make clean
 
-cd ../..
-
+cd mbedtls
+echo "Generating new Makefile header..."
+rm -f Makefile
+echo "LLVM_MC_PATH = "$LLVM_MC_Path > Makefile_header4https
+echo "LLVM_PATH = "$ProofGen_Path >> Makefile_header4https
+cat Makefile_header4https Makefile_template4https > Makefile
+rm Makefile_header4https
+cd ../../..
 
 echo "Re-installed!"

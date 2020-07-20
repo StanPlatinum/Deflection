@@ -198,12 +198,13 @@ void enclave_main()
      * 2. Setup the listening TCP socket
      */
     mbedtls_printf( "  . Bind on https://localhost:4433/ ..." );
-	//if( ( ret = mbedtls_net_bind( &listen_fd, NULL, "4433", MBEDTLS_NET_PROTO_TCP ) ) != 0 )
-    if( ( ret = mbedtls_net_bind( &listen_fd, "129.79.240.235", "4433", MBEDTLS_NET_PROTO_TCP ) ) != 0 )
+    puts("sb");
+    if( ( ret = mbedtls_net_bind( &listen_fd, "127.0.0.1", "4433", MBEDTLS_NET_PROTO_TCP ) ) != 0 )
     {
         mbedtls_printf( " failed\n  ! mbedtls_net_bind returned %d\n\n", ret );
         goto exit;
     }
+    puts("sb end");
     mbedtls_printf( " ok\n" );
 
     /*

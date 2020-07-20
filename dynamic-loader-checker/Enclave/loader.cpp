@@ -1449,9 +1449,9 @@ int cleanup_data(size_t sz)
 //W: Enclave starts here
 void ecall_receive_binary(char *binary, int sz)
 {
-	pr_progress("Initializing ssa");
+	//pr_progress("Initializing ssa checking");
 	//simple_init();
-	main_ssa_init();
+	//main_ssa_init();
 
 	pr_progress("Initializing binary");
 	//dlog("line %d start ecall_receive_binary", __LINE__);
@@ -1497,7 +1497,7 @@ void ecall_receive_binary(char *binary, int sz)
 	pr_progress("disassembling, checking and rewritting");
 	rewrite_whole();
 
-	//pr_progress("debugging: validate if rewrites fine");
+	//pr_progress("debugging: validate if rewritings are correct");
 	//disasm_whole();
 
 	pr_progress("executing input binary");

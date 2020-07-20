@@ -974,7 +974,7 @@ int mbedtls_x509_crt_parse( mbedtls_x509_crt *chain, const unsigned char *buf, s
     int buf_format = MBEDTLS_X509_FORMAT_DER;
 #endif
 
-	puts("dbg1 in mbedtls\n");
+	//puts("dbg1 in mbedtls\n");
     /*
      * Check for valid input
      */

@@ -1,0 +1,135 @@
+
+)
+add_custom_target(lib DEPENDS mbedcrypto mbedx509 mbedtls)
+    add_dependencies(lib mbedcrypto_static mbedx509_static mbedtls_static)
+    add_library(mbedcrypto SHARED ${src_crypto})
+    add_library(${mbedcrypto_static_target} STATIC ${src_crypto})
+    add_library(mbedtls SHARED ${src_tls})
+    add_library(${mbedtls_static_target} STATIC ${src_tls})
+    add_library(mbedx509 SHARED ${src_x509})
+    add_library(${mbedx509_static_target} STATIC ${src_x509})
+    aes.c
+    aesni.c
+    arc4.c
+    asn1parse.c
+    asn1write.c
+    base64.c
+    bignum.c
+    blowfish.c
+    camellia.c
+    ccm.c
+    certs.c
+    cipher.c
+    cipher_wrap.c
+    ctr_drbg.c
+    debug.c
+    des.c
+            DESTINATION ${LIB_INSTALL_DIR}
+    dhm.c
+    ecdh.c
+    ecdsa.c
+    ecjpake.c
+    ecp.c
+    ecp_curves.c
+elseif(USE_STATIC_MBEDTLS_LIBRARY)
+endif()
+endif(CMAKE_COMPILER_IS_CLANG)
+endif(CMAKE_COMPILER_IS_GNUCC)
+endif(ENABLE_ZLIB_SUPPORT)
+endif(NOT USE_STATIC_MBEDTLS_LIBRARY AND NOT USE_SHARED_MBEDTLS_LIBRARY)
+endif(USE_PKCS11_HELPER_LIBRARY)
+endif(USE_SHARED_MBEDTLS_LIBRARY)
+endif(USE_STATIC_MBEDTLS_LIBRARY)
+endif(WIN32)
+    entropy.c
+    entropy_poll.c
+    error.c
+    gcm.c
+    havege.c
+    hmac_drbg.c
+if(CMAKE_COMPILER_IS_CLANG)
+if(CMAKE_COMPILER_IS_GNUCC)
+if(ENABLE_ZLIB_SUPPORT)
+if(LINK_WITH_PTHREAD)
+if (NOT USE_STATIC_MBEDTLS_LIBRARY AND NOT USE_SHARED_MBEDTLS_LIBRARY)
+if(USE_PKCS11_HELPER_LIBRARY)
+if(USE_SHARED_MBEDTLS_LIBRARY)
+if(USE_STATIC_MBEDTLS_LIBRARY)
+if(USE_STATIC_MBEDTLS_LIBRARY AND USE_SHARED_MBEDTLS_LIBRARY)
+if(WIN32)
+    install(TARGETS mbedtls mbedx509 mbedcrypto
+    install(TARGETS ${mbedtls_static_target} ${mbedx509_static_target} ${mbedcrypto_static_target}
+    md2.c
+    md4.c
+    md5.c
+    md.c
+    md_wrap.c
+    memory_buffer_alloc.c
+    message(FATAL_ERROR "Need to choose static or shared mbedtls build!")
+    net.c
+    oid.c
+option(LINK_WITH_PTHREAD "Explicitly link mbed TLS library to pthread." OFF)
+option(USE_SHARED_MBEDTLS_LIBRARY "Build mbed TLS shared library." OFF)
+option(USE_STATIC_MBEDTLS_LIBRARY "Build mbed TLS static library." ON)
+    padlock.c
+    pem.c
+            PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    pk.c
+    pkcs11.c
+    pkcs12.c
+    pkcs5.c
+    pkparse.c
+    pk_wrap.c
+    pkwrite.c
+    platform.c
+    ripemd160.c
+    rsa.c
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-declarations -Wmissing-prototypes")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-declarations -Wmissing-prototypes -Wdocumentation -Wno-documentation-deprecated-sync -Wunreachable-code")
+    set(libs ${libs} pkcs11-helper)
+    set(libs ${libs} pthread)
+    set(libs ${libs} ws2_32)
+    set(libs ${libs} ${ZLIB_LIBRARIES})
+    set(mbedcrypto_static_target "mbedcrypto")
+    set(mbedcrypto_static_target "mbedcrypto_static")
+    set(mbedtls_static_target "mbedtls")
+    set(mbedtls_static_target "mbedtls_static")
+    set(mbedx509_static_target "mbedx509")
+    set(mbedx509_static_target "mbedx509_static")
+set(src_crypto
+set(src_tls
+set(src_x509
+    set_target_properties(mbedcrypto PROPERTIES VERSION 2.3.0 SOVERSION 0)
+    set_target_properties(${mbedcrypto_static_target} PROPERTIES OUTPUT_NAME mbedcrypto)
+    set_target_properties(mbedtls PROPERTIES VERSION 2.3.0 SOVERSION 10)
+    set_target_properties(${mbedtls_static_target} PROPERTIES OUTPUT_NAME mbedtls)
+    set_target_properties(mbedx509 PROPERTIES VERSION 2.3.0 SOVERSION 0)
+    set_target_properties(${mbedx509_static_target} PROPERTIES OUTPUT_NAME mbedx509)
+    sha1.c
+    sha256.c
+    sha512.c
+    ssl_cache.c
+    ssl_ciphersuites.c
+    ssl_cli.c
+    ssl_cookie.c
+    ssl_srv.c
+    ssl_ticket.c
+    ssl_tls.c
+    target_link_libraries(mbedcrypto ${libs})
+    target_link_libraries(${mbedcrypto_static_target} ${libs})
+    target_link_libraries(mbedtls ${libs} mbedx509)
+    target_link_libraries(${mbedtls_static_target} ${libs} ${mbedx509_static_target})
+    target_link_libraries(mbedx509 ${libs} mbedcrypto)
+    target_link_libraries(${mbedx509_static_target} ${libs} ${mbedcrypto_static_target})
+    threading.c
+    timing.c
+    version.c
+    version_features.c
+    x509.c
+    x509_create.c
+    x509_crl.c
+    x509_crt.c
+    x509_csr.c
+    x509write_crt.c
+    x509write_csr.c
+    xtea.c

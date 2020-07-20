@@ -1,3 +1,11 @@
+LLVM_MC_PATH = /home/dajiejie/llvm-mc
+LLVM_PATH = /home/dajiejie/proofGen
+
+LLVM_BIN_PATH = $(LLVM_PATH)/build/bin
+CFIHello_So_PATH = $(LLVM_PATH)/build/lib/LLVMCFIHello.so
+
+#CC = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign -Xclang -load -Xclang $(CFIHello_So_PATH)
+CC = $(LLVM_MC_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign
 
 # Also see "include/mbedtls/config.h"
 
@@ -40,6 +48,11 @@ OBJS_TLS=	debug.o		net.o		ssl_cache.o	\
 .PHONY: all static clean
 
 all: static
+	cat *.txt > entryLabel4ssl
+	sort entryLabel4ssl | uniq > entryLabel4ssl.txt
+	rm entryLabel4ssl
+	mv entryLabel4ssl.txt ..
+	rm *.txt
 
 #static: libmbedcrypto.a libmbedx509.a libmbedtls.a ssl_server.o
 static: libmbedcrypto.a libmbedx509.a libmbedtls.a

@@ -70,6 +70,19 @@ static int sgx_gettimeofday(struct timeval *tv, struct timezone *tz)
     }
     return retv;
 }
+static int sgx_puts1time(const char *str)
+{
+    int retv;
+    sgx_status_t sgx_retv;
+    //W: an example to enforce P0
+    char str_output[80] = {'\0'};
+    strncpy(str_output, str, 79);
+    if((sgx_retv = ocall_sgx_puts1time(&retv, str_output)) != SGX_SUCCESS) {
+        dlog("%s FAILED!, Error code = %d\n", __FUNCTION__, sgx_retv);
+        abort();
+    }
+    return retv;
+}
 static int sgx_puts(const char *str)
 {
     int retv;

@@ -45,7 +45,7 @@ struct aibuf {
 #define EXTRA ((256+sizeof(struct aibuf)-1)/sizeof(struct aibuf))
 
 int getaddrinfo(const char *restrict host, const char *restrict serv, const struct addrinfo *restrict hint, struct addrinfo **restrict res)
-{
+{	
 	int flags = hint ? hint->ai_flags : 0;
 	int family = hint ? hint->ai_family : AF_UNSPEC;
 	int type = hint ? hint->ai_socktype : 0;
@@ -62,16 +62,24 @@ int getaddrinfo(const char *restrict host, const char *restrict serv, const stru
 	int result;
 	int cnt;
 
+	puts("ddsb1");
+
 	if (family != AF_INET && family != AF_INET6 && family != AF_UNSPEC)
 		return EAI_FAMILY;
 
+	puts("ddsb2");
+
 	if (host && strlen(host)>255) return EAI_NONAME;
 	if (serv && strlen(serv)>32) return EAI_SERVICE;
+
+	puts("ddsb3");
 
 	if (type && !proto)
 		proto = type==SOCK_DGRAM ? IPPROTO_UDP : IPPROTO_TCP;
 	if (!type && proto)
 		type = proto==IPPROTO_UDP ? SOCK_DGRAM : SOCK_STREAM;
+
+	puts("ddsb4");
 
 	if (serv) {
 		if (!*serv) return EAI_SERVICE;
@@ -98,6 +106,8 @@ int getaddrinfo(const char *restrict host, const char *restrict serv, const stru
 		if (port > 65535) return EAI_SERVICE;
 		port = htons(port);
 	}
+
+	puts("ddsb5");
 
 	if (!host) {
 		if (family == AF_UNSPEC) {
@@ -129,7 +139,11 @@ int getaddrinfo(const char *restrict host, const char *restrict serv, const stru
 		return 0;
 	}
 
+	puts("ddsb6");
+
 	if (!*host) return EAI_NONAME;
+
+	puts("ddsb7");
 
 	/* Try as a numeric address */
 	if (__ipparse(&sa, family, host) >= 0) {
@@ -148,7 +162,11 @@ int getaddrinfo(const char *restrict host, const char *restrict serv, const stru
 		return 0;
 	}
 
+	puts("ddsb8");
+
 	if (flags & AI_NUMERICHOST) return EAI_NONAME;
+
+	puts("ddsb9");
 
 	f = __fopen_rb_ca("/etc/hosts", &_f, _buf, sizeof _buf);
 	if (f) while (fgets(line, sizeof line, f)) {
@@ -192,6 +210,8 @@ int getaddrinfo(const char *restrict host, const char *restrict serv, const stru
 	}
 	if (f) __fclose_ca(f);
 
+	puts("ddsb10");
+
 #if 0
 	f = __fopen_rb_ca("/etc/resolv.conf", &_f, _buf, sizeof _buf);
 	if (f) while (fgets(line, sizeof line, f)) {
@@ -212,6 +232,8 @@ int getaddrinfo(const char *restrict host, const char *restrict serv, const stru
 	buf = calloc(sizeof *buf, cnt+EXTRA);
 	if (!buf) return EAI_MEMORY;
 
+	puts("ddsb11");
+
 	i = 0;
 	if (family != AF_INET6) {
 		j = __dns_get_rr(&buf[i].sa.sin.sin_addr, sizeof *buf, 4, cnt-i, reply, RR_A, 0);
@@ -228,8 +250,12 @@ int getaddrinfo(const char *restrict host, const char *restrict serv, const stru
 		while (j--) buf[i++].sa.sin.sin_family = AF_INET6;
 	}
 
+	puts("ddsb12");
+
 	if (__dns_get_rr((void *)&buf[cnt], 0, 256, 1, reply, RR_CNAME, 1) <= 0)
 		strcpy((void *)&buf[cnt], host);
+
+	puts("ddsb13");
 
 	for (i=0; i<cnt; i++) {
 		buf[i].ai.ai_protocol = proto;
@@ -244,6 +270,8 @@ int getaddrinfo(const char *restrict host, const char *restrict serv, const stru
 	}
 	buf[cnt-1].ai.ai_next = 0;
 	*res = &buf->ai;
+
+	puts("ddsb14");
 
 	return 0;
 }

@@ -11,7 +11,7 @@ CFIHello_So_PATH = $(LLVM_PATH)/build/lib/LLVMCFIHello.so
 CC = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign
 CC4CFICheck = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign -Xclang -load -Xclang $(CFIHello_So_PATH)
 
-#TARGET_NAME = fasta
+TARGET_NAME = fasta
 #TARGET_NAME = nw
 #TARGET_NAME = simple_malloc
 #TARGET_NAME = malloc_and_sort
@@ -25,7 +25,7 @@ CC4CFICheck = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables
 #TARGET_NAME = bm_sprintf
 #TARGET_NAME = bm_sort_and_binsearch
 
-TARGET_NAME = bm_hello
+#TARGET_NAME = bm_hello
 #TARGET_NAME = misc
 
 #TARGET_NAME = file_io_test
@@ -95,7 +95,7 @@ $(SSL_SERVER): objs/libc_sslserver.a tools/linker malloc.o $(OCALL_OBJS) $(ASM_O
 	cp libgcc/*.o objs
 
 https: $(SSL_SERVER) $(MUSL_LIBC) $(LIBSSL) CFICheck.o
-	cp CFICheck.o objs/
+	#cp CFICheck.o objs/
 	cp mbedtls/*.o objs
 	ls objs/*.o > list
 	cat list | ./tools/linker https
@@ -106,7 +106,6 @@ https: $(SSL_SERVER) $(MUSL_LIBC) $(LIBSSL) CFICheck.o
 	mv $(SSL_SERVER).txt ../entryLabel.txt
 	@echo "Build successfully!"
 
-#$(TARGET_NAME).bin: objs/libc_targetprogram.a tools/linker malloc.o $(OCALL_OBJS) $(ASM_OBJS) CFICheck.o foo1.o
 $(TARGET_NAME).bin: objs/libc_targetprogram.a tools/linker $(OCALL_OBJS) $(ASM_OBJS) CFICheck.o
 	cp CFICheck.o objs/
 	cp malloc.o objs/
@@ -141,19 +140,18 @@ malloc.o: malloc/malloc.c malloc/dlmalloc.inc
 
 # Use Xclang
 $(TARGET_NAME).s: $(TARGET_NAME).c enclave.h CFICheck.h
-	$(CC4CFICheck) -S -I. $< -o $@
+	$(CC) -S -I. $< -o $@
 enclave_main.o: $(TARGET_NAME).s
 	$(CC) -c $< -o $@
 
-#foo1.o: foo1.c
-#	$(CC) -c $< -o $@
 
 $(SSL_SERVER).o: $(SSL_SERVER).c enclave.h
-	$(CC4CFICheck) -S $(SSL_FLAGS) -o $(SSL_SERVER).s $<
-	$(CC) -c $(SSL_SERVER).s -o $@
+	$(CC4AS) -S $(SSL_FLAGS) -o $(SSL_SERVER).s $<
+	$(CC4AS) -c $(SSL_SERVER).s -o $@
 
 CFICheck.o: CFICheck.c
-	$(CC4CFICheck) -c $< -o $@
+	#$(CC4CFICheck) -c $< -o $@
+	$(CC4AS) -c $< -o $@
 
 clean:
 	rm -f *.ll *.s *.txt *.o objs/*.o objs/*.lo objs/*.a \
