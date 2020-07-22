@@ -1,4 +1,4 @@
-CC = /home/dajiejie/llvm-mc/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig
+CC = /home/catsgx/llvm-mc/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig
 
 #CXX = clang++
 
