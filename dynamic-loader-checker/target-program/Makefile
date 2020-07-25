@@ -8,8 +8,8 @@ CC4AS = $(Our_AS_Path)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fn
 LLVM_BIN_PATH = $(LLVM_PATH)/build/bin
 CFIHello_So_PATH = $(LLVM_PATH)/build/lib/LLVMCFIHello.so
 
-CC = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign
-CC4CFICheck = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign -Xclang -load -Xclang $(CFIHello_So_PATH)
+#CC = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign
+CC = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign -Xclang -load -Xclang $(CFIHello_So_PATH)
 
 TARGET_NAME = fasta
 #TARGET_NAME = nw
@@ -95,7 +95,7 @@ $(SSL_SERVER): objs/libc_sslserver.a tools/linker malloc.o $(OCALL_OBJS) $(ASM_O
 	cp libgcc/*.o objs
 
 https: $(SSL_SERVER) $(MUSL_LIBC) $(LIBSSL) CFICheck.o
-	#cp CFICheck.o objs/
+	cp CFICheck.o objs/
 	cp mbedtls/*.o objs
 	ls objs/*.o > list
 	cat list | ./tools/linker https
@@ -138,7 +138,7 @@ malloc.o: malloc/malloc.c malloc/dlmalloc.inc
 #enclave_main.o: $(TARGET_NAME).s enclave.h CFICheck.h
 #	$(CC4AS) -c $< -o $@
 
-# Use Xclang
+
 $(TARGET_NAME).s: $(TARGET_NAME).c enclave.h CFICheck.h
 	$(CC) -S -I. $< -o $@
 enclave_main.o: $(TARGET_NAME).s
@@ -146,12 +146,12 @@ enclave_main.o: $(TARGET_NAME).s
 
 
 $(SSL_SERVER).o: $(SSL_SERVER).c enclave.h
-	$(CC4AS) -S $(SSL_FLAGS) -o $(SSL_SERVER).s $<
-	$(CC4AS) -c $(SSL_SERVER).s -o $@
+	$(CC) -S $(SSL_FLAGS) -o $(SSL_SERVER).s $<
+	$(CC) -c $(SSL_SERVER).s -o $@
 
 CFICheck.o: CFICheck.c
 	#$(CC4CFICheck) -c $< -o $@
-	$(CC4AS) -c $< -o $@
+	$(CC) -c $< -o $@
 
 clean:
 	rm -f *.ll *.s *.txt *.o objs/*.o objs/*.lo objs/*.a \

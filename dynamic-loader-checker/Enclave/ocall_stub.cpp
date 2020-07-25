@@ -240,7 +240,7 @@ static int sgx_gethostname(char *name, size_t namelen)
     int retv;
     sgx_status_t sgx_retv;
 
-    dlog("gethostname in enclave, name: %s\n", name);
+    //dlog("gethostname in enclave, name: %s\n", name);
 
     if((sgx_retv = ocall_sgx_gethostname(&retv, name, namelen)) != SGX_SUCCESS) {
         dlog("%s FAILED!, Error code = %d\n", __FUNCTION__, sgx_retv);
@@ -263,7 +263,7 @@ static int sgx_getaddrinfo(const char *node, const char *service,
     int retv, i;
     sgx_status_t sgx_retv;
 
-    dlog("getaddrinfo in enclave, node: %s\n", node);
+    //dlog("getaddrinfo in enclave, node: %s\n", node);
 
     if((sgx_retv = ocall_sgx_getaddrinfo(&retv, node, service, hints,
                     res)) != SGX_SUCCESS) {

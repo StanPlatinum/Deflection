@@ -183,7 +183,7 @@ int mbedtls_net_connect( mbedtls_net_context *ctx, const char *host, const char 
  */
 int mbedtls_net_bind( mbedtls_net_context *ctx, const char *bind_ip, const char *port, int proto )
 {
-    puts("dsb");
+    //puts("dsb");
     int n, ret;
     struct addrinfo hints, *addr_list, *cur;
 
@@ -198,7 +198,7 @@ int mbedtls_net_bind( mbedtls_net_context *ctx, const char *bind_ip, const char 
     if( bind_ip == NULL )
         hints.ai_flags = AI_PASSIVE;
 
-    puts("dsb end");
+    //puts("dsb end");
 
     if( getaddrinfo( bind_ip, port, &hints, &addr_list ) != 0 )
         return( MBEDTLS_ERR_NET_UNKNOWN_HOST );
