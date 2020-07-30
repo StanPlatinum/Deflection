@@ -163,13 +163,10 @@ void enclave_main()
      * Instead, you may want to use mbedtls_x509_crt_parse_file() to read the
      * server and CA certificates, as well as mbedtls_pk_parse_keyfile().
      */
-	//Weijie:
-	//puts("dbg0\n");
     
 	ret = mbedtls_x509_crt_parse( &srvcert, (const unsigned char *) mbedtls_test_srv_crt,
                           mbedtls_test_srv_crt_len );
 
-	//puts("dbg1\n");
 
     if( ret != 0 )
     {
@@ -382,7 +379,8 @@ reset:
 
     //----> read contents
     memcpy(buf, HTTP_RESPONSE, sizeof(HTTP_RESPONSE));
-    file_desc = open("/home/jaebaek/apache.txt", O_RDONLY);
+    //W:
+    file_desc = open("/home/catsgx/apache.txt", O_RDONLY);
     gettimeofday(&tv0, &tz);
     len = read(file_desc, &buf[sizeof(HTTP_RESPONSE) - 1],
             16*1024 - sizeof(HTTP_RESPONSE));
@@ -423,7 +421,6 @@ reset:
         }
     }
     puts( " ok\n");
-    //----<
 
     mbedtls_printf( "  . Closing the connection..." );
 
