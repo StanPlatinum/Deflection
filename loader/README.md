@@ -30,7 +30,7 @@ Memory Layouts:
 
 __elf_start	(Here begins the .sgx.code: 64M)
 
-32M memory space for ?
+32M memory space for other section
 
 _SGXCODE_BASE
 
