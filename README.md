@@ -1,4 +1,4 @@
-# CAT-SGX
+# Deflection
 
 Although SGX can provide strong isolation and integrity assurance, code privacy may raise some concerns when using it in cloud environments.
 
