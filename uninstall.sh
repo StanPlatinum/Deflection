@@ -41,7 +41,8 @@ then
 	rm -rf llvm-mc
 fi
 
-cd cat-sgx
+# project name
+cd Deflection
 
 cd loader
 make clean

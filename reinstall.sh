@@ -52,7 +52,8 @@ then
 fi
 ProofGen_Path=`pwd`"/proofGen"
 
-cd cat-sgx
+# project name
+cd Deflection
 
 echo "Configuring loader..."
 cd loader

@@ -10,7 +10,7 @@ extern char __elf_end;		/* defined in the linker script */
 #define _SGXDATA_BASE ((void*)(_SGXCODE_BASE + __sgx_data_ofs))
 
 /* 
- * Weijie & shawn233: program start has been changed to __elf_start,
+ * W & X: program start has been changed to __elf_start,
  * program_size is set to 0 although it may be useless 
  */
 char *program = (char *)&__elf_start;
@@ -39,7 +39,7 @@ static Elf64_Sym *symtab;
 char *strtab;
 static Elf64_Sym *main_sym;
 
-//Weijie: add main_index
+//W: add main_index
 int main_index;
 
 /*
@@ -145,14 +145,14 @@ void *get_buf(size_t size) {
 	static addr_t heap_end = _HEAP_BASE;
 	void *ret = (void *)heap_end;
 	heap_end = heap_end + size;
-	//Weijie:
+	//W:
 	return ret;
 }
 
 /* search (section SE, OFS) from symtab - binary search can be applied */
 static unsigned search(const Elf64_Half se, const Elf64_Addr ofs)
 {
-	//Weijie: debugging
+	//W: debugging
 	//dlog("debugging line: %u, entering search()", __LINE__);
 	//dlog("se: %u, ofs: %u", se, ofs);
 	// assuming that symbols are already sorted
@@ -170,7 +170,7 @@ static unsigned search(const Elf64_Half se, const Elf64_Addr ofs)
 static void update_reltab(void)
 {
 	/* read shdr */
-	/* shawn233: CHECK_SIZE is useless in our project */
+	/* X: CHECK_SIZE is useless in our project */
 	if ((pshdr = GET_OBJ(Elf64_Shdr, pehdr->e_shoff)) == NULL)
 			//|| !CHECK_SIZE(pshdr, pehdr->e_shnum*sizeof(Elf64_Shdr)))
 		dlog("%u: Shdr size", __LINE__);
@@ -188,7 +188,7 @@ static void update_reltab(void)
 	}
 
 	n_reltab = (size_t *)get_buf(n_rel * sizeof(size_t));
-	//Weijie: allocate reltab
+	//W: allocate reltab
 	reltab = (Elf64_Rela **)get_buf(n_rel * sizeof(Elf64_Rela *));
 	
 	for(int k = 0; k < n_rel; k++)
@@ -263,8 +263,8 @@ static void load(void)
 	Elf64_Xword last_size = 0;
 	unsigned shndx = -1;
 
-	//Weijie: ignore filename ABS
-	//Weijie: test if i could start with 2
+	//W: ignore filename ABS
+	//W: test if i could start with 2
 	//for (unsigned i = 2; i < n_symtab; ++i, ++_n_symtab) {
 	for (unsigned i = 1; i < n_symtab; ++i, ++_n_symtab) {
 		if (shndx != symtab[i].st_shndx) {
@@ -289,11 +289,11 @@ static void load(void)
 				symtab[i].st_value = last_st_value + symoff - last_off;
 			} else {
 				/* find main */
-				//Weijie: checking if loader could find main()...
+				//W: checking if loader could find main()...
 				//dlog("i: %u, symoff: %lx, pehdr e_entry: %lx", i, symoff, pehdr->e_entry);
 				if (symoff == pehdr->e_entry) {
 					main_sym = &symtab[i];
-					//Weijie: record i
+					//W: record i
 					main_index = i;
 				}
 
@@ -359,12 +359,12 @@ static void relocate(void)
 
 #include "checker_part.cpp"
 /*
- * Weijie: add checker/disassembler here if necessary
+ * W: add checker/disassembler here if necessary
  * Usage: cs_disasm_entry(unsigned char* buf_test, ...);
  */
 
-/* Hongbo: need to do the sanitation */
-/* Weijie: copy data from outside to a .sgx.data section*/
+/* H: need to do the sanitation */
+/* W: copy data from outside to a .sgx.data section*/
 char *userdata = (char *)_SGXDATA_BASE;
 size_t userdata_size = 0;
 void ecall_receive_data(char *data, int sz)
@@ -383,10 +383,10 @@ void cleanup_data(size_t sz)
 	fill_zero(userdata, sz);
 }
 
-//Weijie: Enclave starts here
+//W: Enclave starts here
 void ecall_receive_binary(char *binary, int sz)
 {
-	//Weijie: v1: do not use the following line
+	//W: v1: do not use the following line
 	//program = (char*) binary;
 	cpy(program, binary, (size_t)sz);
 	program_size = sz;
@@ -405,20 +405,20 @@ void ecall_receive_binary(char *binary, int sz)
 	pr_progress("loading");
 	load();
 
-	//Weijie: cannot simply delete relocation in original sgx-shield demo
-	//Weijie: cannot delete the following lines in current demo
+	//W: cannot simply delete relocation in original sgx-shield demo
+	//W: cannot delete the following lines in current demo
 	pr_progress("relocating");
 	relocate();
 
-	//Weijie: use the following lines only if checker_part.cpp is included.
+	//W: use the following lines only if checker_part.cpp is included.
 	//pr_progress("debugging: disasm...");
 	//disasm_whole();
 
 	pr_progress("executing input binary");
 	entry = (void (*)())(main_sym->st_value);
-	//Weijie:
+	//W:
 	dlog("main: %p", entry);
-	//Weijie: the asm inline commands could be commented
+	//W: the asm inline commands could be commented
 	__asm__ __volatile__( "push %%r13\n" "push %%r14\n" "push %%r15\n" ::);
 	pr_progress("r13/14/15 pushed");
 	entry();

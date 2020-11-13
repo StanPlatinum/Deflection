@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Welcome to CAT-SGX/S(gx)elf-Respect!"
+echo "Welcome to Deflection/CAT-SGX/S(gx)elf-Respect!"
 
 Curr_Path=`pwd`
 echo "Current Path: "$Curr_Path

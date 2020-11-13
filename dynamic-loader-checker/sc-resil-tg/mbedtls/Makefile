@@ -1,5 +1,5 @@
-LLVM_MC_PATH = /home/catsgx/llvm-mc
-LLVM_PATH = /home/catsgx/proofGen
+LLVM_MC_PATH = /home/dajiejie/llvm-mc
+LLVM_PATH = /home/dajiejie/proofGen
 
 LLVM_BIN_PATH = $(LLVM_PATH)/build/bin
 CFIHello_So_PATH = $(LLVM_PATH)/build/lib/LLVMCFIHello.so
