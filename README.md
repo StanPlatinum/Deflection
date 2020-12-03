@@ -1,4 +1,8 @@
-# Deflection
+# Deflection (CAT-SGX)
+
+This project is derived from elf-respect (https://github.com/StanPlatinum/elf-respect) and its compiler (https://github.com/StanPlatinum/elf-respect-compiler).
+
+***
 
 Although SGX can provide strong isolation and integrity assurance, code privacy may raise some concerns when using it in cloud environments.
 
