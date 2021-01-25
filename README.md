@@ -22,7 +22,7 @@ Make sure,
 
 you have an 'SGX machine' (a machine whose CPU supports Intel SGX, with SGX Driver installed, and with SGXSDK installed in /opt/intel);
 
-you have at least 10G memory (Swap could be included) and 100G disk space before having a try, which means the most suitable place for having fun with cat-sgx is a satisfiable Linux server machine.
+you have at least 10G memory (Swap could be included) and 100G disk space before having a try. It means probably the most suitable place for having fun with cat-sgx is a satisfiable Linux server machine.
 
 The installation paths of other dependencies are in the same directory as cat-sgx by default.
 
