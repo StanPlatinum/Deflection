@@ -156,7 +156,7 @@ enclave_main:                           # @enclave_main
 	cmpq	%rax, %rsp
 	jb	.LBB1_2
 	popq	%rax
-	subq	$16, %rsp
+	subq	$32, %rsp
 	pushq	%rax
 	movabsq	$6917529027641081855, %rax # imm = 0x5FFFFFFFFFFFFFFF
 	cmpq	%rax, %rsp
@@ -165,8 +165,69 @@ enclave_main:                           # @enclave_main
 	cmpq	%rax, %rsp
 	jb	.LBB1_2
 	popq	%rax
+	leaq	.L.str(%rip), %rdi
+	movb	$0, %al
+	callq	puts@PLT
+	leaq	.L.str.1(%rip), %rdi
+	pushq	%rbx
+	pushq	%rax
+	leaq	16(%rsp), %rax
+	movabsq	$4611686018427387903, %rbx # imm = 0x3FFFFFFFFFFFFFFF
+	cmpq	%rbx, %rax
+	ja	.LBB1_1
+	movabsq	$5764607523034234879, %rbx # imm = 0x4FFFFFFFFFFFFFFF
+	cmpq	%rax, %rbx
+	jb	.LBB1_1
+	popq	%rax
+	popq	%rbx
+	movl	%eax, 16(%rsp)          # 4-byte Spill
+	movb	$0, %al
+	callq	puts@PLT
 	movl	$8, %edi
+	pushq	%rbx
+	pushq	%rax
+	leaq	12(%rsp), %rax
+	movabsq	$4611686018427387903, %rbx # imm = 0x3FFFFFFFFFFFFFFF
+	cmpq	%rbx, %rax
+	ja	.LBB1_1
+	movabsq	$5764607523034234879, %rbx # imm = 0x4FFFFFFFFFFFFFFF
+	cmpq	%rax, %rbx
+	jb	.LBB1_1
+	popq	%rax
+	popq	%rbx
+	movl	%eax, 12(%rsp)          # 4-byte Spill
 	callq	malloc@PLT
+	pushq	%rbx
+	pushq	%rax
+	leaq	24(%rsp), %rax
+	movabsq	$4611686018427387903, %rbx # imm = 0x3FFFFFFFFFFFFFFF
+	cmpq	%rbx, %rax
+	ja	.LBB1_1
+	movabsq	$5764607523034234879, %rbx # imm = 0x4FFFFFFFFFFFFFFF
+	cmpq	%rax, %rbx
+	jb	.LBB1_1
+	popq	%rax
+	popq	%rbx
+	movq	%rax, 24(%rsp)
+	movq	24(%rsp), %rdi
+	movl	$3735928559, %esi       # imm = 0xDEADBEEF
+	callq	mem_write@PLT
+	pushq	%rbx
+	pushq	%rax
+	leaq	20(%rsp), %rax
+	movabsq	$4611686018427387903, %rbx # imm = 0x3FFFFFFFFFFFFFFF
+	cmpq	%rbx, %rax
+	ja	.LBB1_1
+	movabsq	$5764607523034234879, %rbx # imm = 0x4FFFFFFFFFFFFFFF
+	cmpq	%rax, %rbx
+	jb	.LBB1_1
+	popq	%rax
+	popq	%rbx
+	movl	%eax, 20(%rsp)
+	leaq	.L.str.2(%rip), %rdi
+	movb	$0, %al
+	callq	puts@PLT
+	xorl	%edi, %edi
 	pushq	%rbx
 	pushq	%rax
 	leaq	8(%rsp), %rax
@@ -178,38 +239,7 @@ enclave_main:                           # @enclave_main
 	jb	.LBB1_1
 	popq	%rax
 	popq	%rbx
-	movq	%rax, 8(%rsp)
-	movq	8(%rsp), %rdi
-	movl	$3735928559, %esi       # imm = 0xDEADBEEF
-	callq	mem_write@PLT
-	pushq	%rbx
-	pushq	%rax
-	leaq	4(%rsp), %rax
-	movabsq	$4611686018427387903, %rbx # imm = 0x3FFFFFFFFFFFFFFF
-	cmpq	%rbx, %rax
-	ja	.LBB1_1
-	movabsq	$5764607523034234879, %rbx # imm = 0x4FFFFFFFFFFFFFFF
-	cmpq	%rax, %rbx
-	jb	.LBB1_1
-	popq	%rax
-	popq	%rbx
-	movl	%eax, 4(%rsp)
-	leaq	.L.str(%rip), %rdi
-	movb	$0, %al
-	callq	puts@PLT
-	xorl	%edi, %edi
-	pushq	%rbx
-	pushq	%rax
-	leaq	(%rsp), %rax
-	movabsq	$4611686018427387903, %rbx # imm = 0x3FFFFFFFFFFFFFFF
-	cmpq	%rbx, %rax
-	ja	.LBB1_1
-	movabsq	$5764607523034234879, %rbx # imm = 0x4FFFFFFFFFFFFFFF
-	cmpq	%rax, %rbx
-	jb	.LBB1_1
-	popq	%rax
-	popq	%rbx
-	movl	%eax, (%rsp)            # 4-byte Spill
+	movl	%eax, 8(%rsp)           # 4-byte Spill
 	callq	exit@PLT
 .LBB1_1:                                # Label of block must be emitted
 	popq	%rax
@@ -226,8 +256,18 @@ enclave_main:                           # @enclave_main
 	.type	.L.str,@object          # @.str
 	.section	.rodata.str1.1,"aMS",@progbits,1
 .L.str:
+	.asciz	"hello in\n"
+	.size	.L.str, 10
+
+	.type	.L.str.1,@object        # @.str.1
+.L.str.1:
+	.asciz	"hello middle\n"
+	.size	.L.str.1, 14
+
+	.type	.L.str.2,@object        # @.str.2
+.L.str.2:
 	.asciz	"hello out\n"
-	.size	.L.str, 11
+	.size	.L.str.2, 11
 
 
 	.ident	"clang version 9.0.0 (https://github.com/StanPlatinum/proofGen.git 6044f8a5547a07bdda36539f140b3f888888bd3b)"
