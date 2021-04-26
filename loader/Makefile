@@ -1,6 +1,6 @@
-SGX_SRC_PATH = /home/dajiejie/linux-sgx
-ELFUTILS_PATH = /home/dajiejie/elfutils
-CAPSTONE_PATH = /home/dajiejie/capstone
+SGX_SRC_PATH = /usr/local/src/PoC/linux-sgx
+ELFUTILS_PATH = /usr/local/src/PoC/elfutils
+CAPSTONE_PATH = /usr/local/src/PoC/capstone
 ######## Checker Settings ########
 
 TRTS_INC_PATH = -I$(SGX_SRC_PATH)/sdk/trts -I$(SGX_SRC_PATH)/common/inc/internal

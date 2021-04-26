@@ -1,6 +1,6 @@
-SGX_SRC_PATH = /home/dajiejie/linux-sgx
-ELFUTILS_PATH = /home/dajiejie/elfutils
-CAPSTONE_PATH = /home/dajiejie/capstone
+SGX_SRC_PATH = /usr/local/src/PoC/linux-sgx
+ELFUTILS_PATH = /usr/local/src/PoC/elfutils
+CAPSTONE_PATH = /usr/local/src/PoC/capstone
 
 ######## Checker Settings ########
 
@@ -35,7 +35,7 @@ IN_ENCLAVE_PROGRAM = program
 
 DEF_SYMBOL_SCRIPT =Enclave/define_symbols.lds
 
-# abandon original's settings
+# abandon original settings
 
 # default switch on the debug option
 DEBUG ?= ON
@@ -239,6 +239,7 @@ Enclave/Enclave_t.o: Enclave/enclave.c Enclave/Enclave_t.c Enclave/ocall_type.h
 
 #W: Here starts the new dyn-loader
 #Xinyu & W: Only use objcopy to reserve some memory (64M currently, with alloc, data, code)
+#W: setting for tests
 Enclave/%.o: Enclave/%.cpp
 	$(CXX) $(Enclave_Cpp_Flags) $(DEBUG_OPT) -c $< -o $@
 	@fallocate -l 4M ssblob
@@ -262,7 +263,7 @@ $(Signed_Enclave_Name): $(Enclave_Name)
 	@echo "SIGN =>  $@"
 
 
-# W: add symtab debugging
+# W: for symtab debugging
 symtab_test: symtab_test.cpp
 	$(CXX) $^ -o $@
 

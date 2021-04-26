@@ -1,6 +1,6 @@
-LLVM_PATH = /home/dajiejie/proofGen
-Our_AS_Path = /home/dajiejie/llvm-mc
-SGX_SRC_PATH = /home/dajiejie/linux-sgx
+LLVM_PATH = /usr/local/src/PoC/proofGen
+Our_AS_Path = /usr/local/src/PoC/llvm-mc
+SGX_SRC_PATH = /usr/local/src/PoC/linux-sgx
 
 SGX_COM_INC = $(SGX_SRC_PATH)/common/inc
 

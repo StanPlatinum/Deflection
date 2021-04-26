@@ -1,5 +1,5 @@
-LLVM_PATH = /home/dajiejie/proofGen
-Our_AS_Path = /home/dajiejie/llvm-mc
+LLVM_PATH = /usr/local/src/PoC/proofGen
+Our_AS_Path = /usr/local/src/PoC/llvm-mc
 
 CC4AS = $(Our_AS_Path)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables -fno-addrsig -mstackrealign
 
@@ -25,11 +25,13 @@ CC4CFICheck = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables
 #TARGET_NAME = bm_sprintf
 #TARGET_NAME = bm_sort_and_binsearch
 
-TARGET_NAME = bm_hello
+# TARGET_NAME = bm_hello
 #TARGET_NAME = misc
 
 #TARGET_NAME = file_io_test
 #TARGET_NAME = credit_score
+
+TARGET_NAME = poc
 
 SSL_SERVER = ssl_server
 
@@ -156,7 +158,7 @@ CFICheck.o: CFICheck.c
 	$(CC4CFICheck) -c $< -o $@
 
 clean:
-	rm -f *.ll *.s *.txt *.o objs/*.o objs/*.lo objs/*.a \
+	rm -f *.ll *.txt *.o objs/*.o objs/*.lo objs/*.a \
 		list lib/*.o lib/*.txt
 	rm -rf $(TARGET_NAME)
 
