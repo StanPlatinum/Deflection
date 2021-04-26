@@ -305,12 +305,15 @@ int main(int argc, char *argv[])
 	int n_read = fread(buffer_code, sizeof(char), sz_code, fp);
 	printf("number of bytes read is %d\n", n_read);
 	
-	// HB
+	unsigned long * exploit_buffer = (unsigned long*)malloc(sizeof(unsigned long));
 	
 	//W: receive code
 	ecall_receive_binary(eid, buffer_code, sz_code);
 	fclose(fp);
 	printf("receiving/executing binary completed.\n");
+
+	// HB: malloc for explicit write
+	printf("exploit_buffer address: %p\nexploit_buffer content: %lx \n", exploit_buffer, *exploit_buffer);
 
 	//W: call test ecall
 	//ecall_test_capstone_iter(eid);

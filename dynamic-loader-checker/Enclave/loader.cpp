@@ -494,6 +494,16 @@ void PrintDebugInfo(const char *fmt, ...)
 
 /****************************** 1. rewriter part ******************************/
 
+//W: not sure with the upper bound
+//Elf64_Addr data_upper_bound = (Elf64_Addr)&__elf_end;
+Elf64_Addr data_lower_bound = (Elf64_Addr) get_enclave_base();
+//Elf64_Addr data_lower_bound = (Elf64_Addr)_SGXDATA_BASE;
+Elf64_Addr data_upper_bound = (Elf64_Addr) (get_enclave_base() + get_enclave_size());
+
+Elf64_Addr stack_upper_bound = 0xffffffffffffffff;
+Elf64_Addr stack_lower_bound = 0x0000000000000001;
+
+
 void cpy_imm2addr32(Elf64_Addr *dst, uint32_t src)
 {
 	//W: write 32 bits
@@ -533,22 +543,17 @@ Elf64_Addr get_immAddr(cs_insn single_insn, Elf64_Addr imm_offset)
 {
 	return single_insn.address + imm_offset;
 }
-//W: not sure with the upper bound
-//Elf64_Addr data_upper_bound = (Elf64_Addr)&__elf_end;
-Elf64_Addr data_upper_bound = 0xffffffffffffffff;
-//Elf64_Addr data_lower_bound = (Elf64_Addr)_SGXDATA_BASE;
-Elf64_Addr data_lower_bound = 0x0000000000000001;
 
-Elf64_Addr stack_upper_bound = 0xffffffffffffffff;
-Elf64_Addr stack_lower_bound = 0x0000000000000001;
 
 unsigned call_target_idx_global = 0;
 
-void get_bounds()
+void set_bounds()
 {
 	//W: get_enclave_base currently not suits for ss-test-enclave
-	//void *this_enclave_base = get_enclave_base();
-	//size_t this_enclave_size = get_enclave_size();
+	void *this_enclave_base = get_enclave_base();
+	size_t this_enclave_size = get_enclave_size();
+	data_lower_bound = (Elf64_Addr)this_enclave_base;
+	data_upper_bound = (Elf64_Addr)(this_enclave_base + this_enclave_size);
 	//dlog("base: %p, size: 0x%x", this_enclave_base, this_enclave_size);
 	//W: TO-DO
 	//W: deciding data section bounds
@@ -645,24 +650,24 @@ int check_rewrite_memwt(csh ud, cs_mode, cs_insn *ins, cs_insn *forward_ins)
 		if (
 			(strncmp("push", forward_ins[0].mnemonic, 4) == 0) &&
 			(strncmp("push", forward_ins[1].mnemonic, 4) == 0) &&
-			(strncmp("pushfq", forward_ins[2].mnemonic, 6) == 0) &&
-			(strncmp("lea", forward_ins[3].mnemonic, 3) == 0) &&
-			(strncmp("movabs", forward_ins[4].mnemonic, 6) == 0) &&
-			(strncmp("cmp", forward_ins[5].mnemonic, 3) == 0) &&
-			(strncmp("ja", forward_ins[6].mnemonic, 2) == 0) &&
-			(strncmp("movabs", forward_ins[7].mnemonic, 6) == 0) &&
-			(strncmp("cmp", forward_ins[8].mnemonic, 3) == 0) &&
-			(strncmp("jb", forward_ins[9].mnemonic, 2) == 0) &&
-			(strncmp("popfq", forward_ins[10].mnemonic, 5) == 0) &&
-			(strncmp("pop", forward_ins[11].mnemonic, 3) == 0) &&
-			(strncmp("pop", forward_ins[12].mnemonic, 3) == 0))
+			// (strncmp("pushfq", forward_ins[2].mnemonic, 6) == 0) &&
+			(strncmp("lea", forward_ins[2].mnemonic, 3) == 0) &&
+			(strncmp("movabs", forward_ins[3].mnemonic, 6) == 0) &&
+			(strncmp("cmp", forward_ins[4].mnemonic, 3) == 0) &&
+			(strncmp("ja", forward_ins[5].mnemonic, 2) == 0) &&
+			(strncmp("movabs", forward_ins[6].mnemonic, 6) == 0) &&
+			(strncmp("cmp", forward_ins[7].mnemonic, 3) == 0) &&
+			(strncmp("jb", forward_ins[8].mnemonic, 2) == 0) &&
+			// (strncmp("popfq", forward_ins[10].mnemonic, 5) == 0) &&
+			(strncmp("pop", forward_ins[9].mnemonic, 3) == 0) &&
+			(strncmp("pop", forward_ins[10].mnemonic, 3) == 0))
 		{
 			//W: replace 2 imms
 			//W: getting the address
 			//Elf64_Addr cmp_imm_offset = 2; //cmp 1 byte, rax 1 byte
 			Elf64_Addr movabs_imm_offset = 2; //movabs 1 byte, rbx 1 byte?
-			Elf64_Addr imm1_addr = get_immAddr(forward_ins[4], movabs_imm_offset);
-			Elf64_Addr imm2_addr = get_immAddr(forward_ins[7], movabs_imm_offset);
+			Elf64_Addr imm1_addr = get_immAddr(forward_ins[3], movabs_imm_offset);
+			Elf64_Addr imm2_addr = get_immAddr(forward_ins[6], movabs_imm_offset);
 			//W:
 			//dlog("imm1 address: %p, imm2 address: %p", imm1_addr, imm2_addr);
 			//W: rewritting
@@ -670,6 +675,7 @@ int check_rewrite_memwt(csh ud, cs_mode, cs_insn *ins, cs_insn *forward_ins)
 			//0x4fffffffffffffff <---> lower bound
 			rewrite_imm(imm1_addr, data_upper_bound);
 			rewrite_imm(imm2_addr, data_lower_bound);
+			PrintDebugInfo("data_lower_bound:%lx\n", (unsigned long)data_lower_bound);
 			//PrintDebugInfo("memory write rewritting done.\n");
 			//PrintDebugInfo("memory write check done.\n");
 			return 1;
@@ -686,7 +692,7 @@ int check_rewrite_memwt(csh ud, cs_mode, cs_insn *ins, cs_insn *forward_ins)
 		*/
 		else
 		{
-			//PrintDebugInfo("memory write check failed.\n");
+			// PrintDebugInfo("memory write check failed.\n");
 			return -1;
 		}
 	}
@@ -1205,20 +1211,20 @@ int cs_rewrite_entry(unsigned char *buf_test, Elf64_Xword textSize, Elf64_Addr t
 			//W: insns should be right before the current disasmed insn
 			if (j >= 13)
 			{
-				cs_insn forward_insn[13];
-				forward_insn[0] = insn[j - 13];
-				forward_insn[1] = insn[j - 12];
-				forward_insn[2] = insn[j - 11];
-				forward_insn[3] = insn[j - 10];
-				forward_insn[4] = insn[j - 9];
-				forward_insn[5] = insn[j - 8];
-				forward_insn[6] = insn[j - 7];
-				forward_insn[7] = insn[j - 6];
-				forward_insn[8] = insn[j - 5];
-				forward_insn[9] = insn[j - 4];
-				forward_insn[10] = insn[j - 3];
-				forward_insn[11] = insn[j - 2];
-				forward_insn[12] = insn[j - 1];
+				cs_insn forward_insn[11];
+				forward_insn[0] = insn[j - 11];
+				forward_insn[1] = insn[j - 10];
+				forward_insn[2] = insn[j - 9];
+				forward_insn[3] = insn[j - 8];
+				forward_insn[4] = insn[j - 7];
+				forward_insn[5] = insn[j - 6];
+				forward_insn[6] = insn[j - 5];
+				forward_insn[7] = insn[j - 4];
+				forward_insn[8] = insn[j - 3];
+				forward_insn[9] = insn[j - 2];
+				forward_insn[10] = insn[j - 1];
+				// forward_insn[11] = insn[j - 2];
+				// forward_insn[12] = insn[j - 1];
 				//W: checking mem write
 				memwt_intact = check_rewrite_memwt(handle, CS_MODE_64, &insn[j], forward_insn);
 			}
@@ -1620,6 +1626,8 @@ void ecall_receive_binary(char *binary, int sz)
 	sgx_push_gadget((unsigned long)_SGXCODE_BASE);
 	sgx_push_gadget((unsigned long)_SGXDATA_BASE);
 
+	set_bounds();
+
 	//W: check those vars again and again
 	dlog("p_specialname = %p", p_specialname);
 	dlog("main_ssa = %p", main_ssa);
@@ -1646,8 +1654,8 @@ void ecall_receive_binary(char *binary, int sz)
 	pr_progress("disassembling, checking and rewritting");
 	rewrite_whole();
 
-	//pr_progress("debugging: validate if rewritings are correct");
-	//disasm_whole();
+	pr_progress("debugging: validate if rewritings are correct");
+	disasm_whole();
 
 	pr_progress("executing input binary");
 	entry = (void (*)())(main_sym->st_value);

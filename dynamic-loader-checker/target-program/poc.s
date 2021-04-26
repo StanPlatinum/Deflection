@@ -13,7 +13,7 @@ mem_write:                              # @mem_write
 	movq	%r10, (%r11)
 	pushq	%rbp
 	movq	%rsp, %rbp
-	andq	$-16, %rsp
+	andq	$-8, %rsp
 	pushq	%rax
 	movabsq	$6917529027641081855, %rax # imm = 0x5FFFFFFFFFFFFFFF
 	cmpq	%rax, %rsp
@@ -68,7 +68,10 @@ mem_write:                              # @mem_write
 	popq	%rbx
 	movq	$0, 8(%rsp)
 	jmp	.LBB0_2
-
+.LBB0_1:                                # %ins
+                                        #   in Loop: Header=BB0_2 Depth=1
+	movq	16(%rsp), %rax
+	movq	24(%rsp), %rcx
 	pushq	%rbx
 	pushq	%rax
 	leaq	(%rcx), %rax
@@ -80,10 +83,6 @@ mem_write:                              # @mem_write
 	jb	.LBB0_6
 	popq	%rax
 	popq	%rbx
-.LBB0_1:                                # %ins
-                                        #   in Loop: Header=BB0_2 Depth=1
-	movq	16(%rsp), %rax
-	movq	24(%rsp), %rcx
 	movq	%rax, (%rcx)
 	pushq	%rbx
 	pushq	%rax
@@ -107,23 +106,7 @@ mem_write:                              # @mem_write
 .LBB0_4:                                # %if.end
 	jmp	.LBB0_5
 .LBB0_5:                                # %out
-	leaq	.L.str(%rip), %rdi
-	movb	$0, %al
-	callq	puts@PLT
-	xorl	%ecx, %ecx
-	pushq	%rbx
-	pushq	%rax
-	leaq	4(%rsp), %rax
-	movabsq	$4611686018427387903, %rbx # imm = 0x3FFFFFFFFFFFFFFF
-	cmpq	%rbx, %rax
-	ja	.LBB0_6
-	movabsq	$5764607523034234879, %rbx # imm = 0x4FFFFFFFFFFFFFFF
-	cmpq	%rax, %rbx
-	jb	.LBB0_6
-	popq	%rax
-	popq	%rbx
-	movl	%eax, 4(%rsp)           # 4-byte Spill
-	movl	%ecx, %eax
+	xorl	%eax, %eax
 	pushq	%rax
 	movabsq	$6917529027641081855, %rax # imm = 0x5FFFFFFFFFFFFFFF
 	cmpq	%rax, %rbp
@@ -199,7 +182,6 @@ enclave_main:                           # @enclave_main
 	movq	8(%rsp), %rdi
 	movl	$3735928559, %esi       # imm = 0xDEADBEEF
 	callq	mem_write@PLT
-	xorl	%edi, %edi
 	pushq	%rbx
 	pushq	%rax
 	leaq	4(%rsp), %rax
@@ -212,6 +194,22 @@ enclave_main:                           # @enclave_main
 	popq	%rax
 	popq	%rbx
 	movl	%eax, 4(%rsp)
+	leaq	.L.str(%rip), %rdi
+	movb	$0, %al
+	callq	puts@PLT
+	xorl	%edi, %edi
+	pushq	%rbx
+	pushq	%rax
+	leaq	(%rsp), %rax
+	movabsq	$4611686018427387903, %rbx # imm = 0x3FFFFFFFFFFFFFFF
+	cmpq	%rbx, %rax
+	ja	.LBB1_1
+	movabsq	$5764607523034234879, %rbx # imm = 0x4FFFFFFFFFFFFFFF
+	cmpq	%rax, %rbx
+	jb	.LBB1_1
+	popq	%rax
+	popq	%rbx
+	movl	%eax, (%rsp)            # 4-byte Spill
 	callq	exit@PLT
 .LBB1_1:                                # Label of block must be emitted
 	popq	%rax
