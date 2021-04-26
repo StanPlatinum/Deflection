@@ -538,6 +538,7 @@ Elf64_Addr get_immAddr(cs_insn single_insn, Elf64_Addr imm_offset)
 Elf64_Addr data_upper_bound = 0xffffffffffffffff;
 //Elf64_Addr data_lower_bound = (Elf64_Addr)_SGXDATA_BASE;
 Elf64_Addr data_lower_bound = 0x0000000000000001;
+
 Elf64_Addr stack_upper_bound = 0xffffffffffffffff;
 Elf64_Addr stack_lower_bound = 0x0000000000000001;
 
