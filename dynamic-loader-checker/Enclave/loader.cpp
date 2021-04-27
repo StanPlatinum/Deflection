@@ -496,9 +496,9 @@ void PrintDebugInfo(const char *fmt, ...)
 
 //W: not sure with the upper bound
 //Elf64_Addr data_upper_bound = (Elf64_Addr)&__elf_end;
-Elf64_Addr data_lower_bound = (Elf64_Addr) get_enclave_base();
+Elf64_Addr data_lower_bound = 0x0000000000000001;
 //Elf64_Addr data_lower_bound = (Elf64_Addr)_SGXDATA_BASE;
-Elf64_Addr data_upper_bound = (Elf64_Addr) (get_enclave_base() + get_enclave_size());
+Elf64_Addr data_upper_bound = 0xffffffffffffffff;
 
 Elf64_Addr stack_upper_bound = 0xffffffffffffffff;
 Elf64_Addr stack_lower_bound = 0x0000000000000001;
@@ -675,7 +675,7 @@ int check_rewrite_memwt(csh ud, cs_mode, cs_insn *ins, cs_insn *forward_ins)
 			//0x4fffffffffffffff <---> lower bound
 			rewrite_imm(imm1_addr, data_upper_bound);
 			rewrite_imm(imm2_addr, data_lower_bound);
-			PrintDebugInfo("data_lower_bound:%lx\n", (unsigned long)data_lower_bound);
+			// PrintDebugInfo("data_lower_bound:%lx\n", (unsigned long)data_lower_bound);
 			//PrintDebugInfo("memory write rewritting done.\n");
 			//PrintDebugInfo("memory write check done.\n");
 			return 1;
@@ -1655,7 +1655,7 @@ void ecall_receive_binary(char *binary, int sz)
 	rewrite_whole();
 
 	pr_progress("debugging: validate if rewritings are correct");
-	disasm_whole();
+	// disasm_whole();
 
 	pr_progress("executing input binary");
 	entry = (void (*)())(main_sym->st_value);

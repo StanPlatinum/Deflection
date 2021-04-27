@@ -23,10 +23,8 @@ out:
 void enclave_main()
 {
     puts("hello in\n");
-    // unsigned long magic = 0;
-    puts("hello middle\n");
-    unsigned long* buf = (unsigned long*)malloc(sizeof(unsigned long));
-    // unsigned long * buf = 0x55555576e470;
+    // unsigned long* buf = (unsigned long*)malloc(sizeof(unsigned long));
+    unsigned long * buf = 0x55555576e470;
     int rv = mem_write(buf, 0xDEADBEEF);
     puts("hello out\n");
 	enclave_exit();

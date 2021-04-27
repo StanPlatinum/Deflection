@@ -144,6 +144,7 @@ malloc.o: malloc/malloc.c malloc/dlmalloc.inc
 # Use Xclang
 $(TARGET_NAME).s: $(TARGET_NAME).c enclave.h CFICheck.h
 	$(CC4CFICheck) -S -I. $< -o $@
+#	$(CC4AS) -S -I. $< -o $@
 enclave_main.o: $(TARGET_NAME).s
 	$(CC) -c $< -o $@
 
