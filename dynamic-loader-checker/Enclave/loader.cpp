@@ -558,7 +558,7 @@ void set_bounds()
 	//W: TO-DO
 	//W: deciding data section bounds
 	//W: data_upper/lower_bound should be two global variables.
-	dlog("upper bound: %p, lower bound: %p", data_upper_bound, data_lower_bound);
+	dlog("upper bound: %p\nlower bound: %p", data_upper_bound, data_lower_bound);
 }
 
 /****************************** 2. checker part ******************************/

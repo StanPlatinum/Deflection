@@ -26,12 +26,11 @@ CC4CFICheck = $(LLVM_PATH)/build/bin/clang -fPIC -fno-asynchronous-unwind-tables
 #TARGET_NAME = bm_sort_and_binsearch
 
 # TARGET_NAME = bm_hello
+TARGET_NAME = poc
 #TARGET_NAME = misc
 
 #TARGET_NAME = file_io_test
 #TARGET_NAME = credit_score
-
-TARGET_NAME = poc
 
 SSL_SERVER = ssl_server
 
@@ -144,7 +143,6 @@ malloc.o: malloc/malloc.c malloc/dlmalloc.inc
 # Use Xclang
 $(TARGET_NAME).s: $(TARGET_NAME).c enclave.h CFICheck.h
 	$(CC4CFICheck) -S -I. $< -o $@
-#	$(CC4AS) -S -I. $< -o $@
 enclave_main.o: $(TARGET_NAME).s
 	$(CC) -c $< -o $@
 
@@ -159,7 +157,7 @@ CFICheck.o: CFICheck.c
 	$(CC4CFICheck) -c $< -o $@
 
 clean:
-	rm -f *.ll *.txt *.o objs/*.o objs/*.lo objs/*.a \
+	rm -f *.ll *.s *.txt *.o objs/*.o objs/*.lo objs/*.a \
 		list lib/*.o lib/*.txt
 	rm -rf $(TARGET_NAME)
 

@@ -35,7 +35,7 @@ IN_ENCLAVE_PROGRAM = program
 
 DEF_SYMBOL_SCRIPT =Enclave/define_symbols.lds
 
-# abandon original settings
+# abandon original's settings
 
 # default switch on the debug option
 DEBUG ?= ON
@@ -239,7 +239,6 @@ Enclave/Enclave_t.o: Enclave/enclave.c Enclave/Enclave_t.c Enclave/ocall_type.h
 
 #W: Here starts the new dyn-loader
 #Xinyu & W: Only use objcopy to reserve some memory (64M currently, with alloc, data, code)
-#W: setting for tests
 Enclave/%.o: Enclave/%.cpp
 	$(CXX) $(Enclave_Cpp_Flags) $(DEBUG_OPT) -c $< -o $@
 	@fallocate -l 4M ssblob
@@ -263,7 +262,7 @@ $(Signed_Enclave_Name): $(Enclave_Name)
 	@echo "SIGN =>  $@"
 
 
-# W: for symtab debugging
+# W: add symtab debugging
 symtab_test: symtab_test.cpp
 	$(CXX) $^ -o $@
 

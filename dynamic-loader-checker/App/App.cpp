@@ -313,7 +313,7 @@ int main(int argc, char *argv[])
 	printf("receiving/executing binary completed.\n");
 
 	// HB: malloc for explicit write
-	printf("exploit_buffer address: %p\nexploit_buffer content: %lx \n", exploit_buffer, *exploit_buffer);
+	// printf("exploit_buffer address: %p\nexploit_buffer content: %lx \n", exploit_buffer, *exploit_buffer);
 
 	//W: call test ecall
 	//ecall_test_capstone_iter(eid);
