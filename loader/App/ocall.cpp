@@ -223,3 +223,8 @@ int ocall_sgx_shutdown(int sockfd, int how)
 {
     return shutdown(sockfd, how);
 }
+
+int ocall_sgx_nanosleep(struct timespec *rqtp, struct timespec *rmtp)
+{
+    return nanosleep(rqtp, rmtp);
+}

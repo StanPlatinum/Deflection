@@ -416,6 +416,17 @@ static int sgx_shutdown(int a, int b)
     return retv;
 }
 
+static int sgx_nanosleep(struct timespec *rptp, struct timespec *rmtp)
+{
+    int retv;
+    sgx_status_t sgx_retv;
+    if((sgx_retv = ocall_sgx_nanosleep(&retv, rptp, rmtp)) != SGX_SUCCESS) {
+        dlog("%s FAILED!, Error code = %d\n", __FUNCTION__, sgx_retv);
+        abort();
+    }
+    return retv;
+}
+
 static void sgx_push_gadget(unsigned long gadget)
 {
     sgx_status_t sgx_retv;

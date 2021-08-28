@@ -109,6 +109,7 @@ enclave {
         unsigned long ocall_sgx_ntohl(unsigned long netlong);
         sighandler_t ocall_sgx_signal(int signum, sighandler_t a);
         int ocall_sgx_shutdown(int a, int b);
+        int ocall_sgx_nanosleep([in, out, size=16] struct timespec *rqtp, [in, out, size=16] struct timespec *rmtp);
     };
 
 };
