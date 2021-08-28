@@ -1,5 +1,7 @@
 # Deflection (CAT-SGX)
 
+Deflection is an SGX shielding runtime (SGX middleware) that can run nearly unmodified C/C++ code securely. Other than Graphene-SGX, SCONE, Occlum, etc., it can protect the code secrecy and data confidentiality at the same time.
+
 This project is derived from elf-respect (https://github.com/StanPlatinum/elf-respect) and its compiler (https://github.com/StanPlatinum/elf-respect-compiler).
 
 ***
