@@ -19,17 +19,17 @@ Install_Path=`pwd`
 echo "Install Path: "$Install_Path
 
 
-if [ ! -d "./linux-sgx" ]
+if [ ! -d "./linux-sgx-cat" ]
 then
 	echo "Building SGXSDK..."
-	git clone https://github.com/StanPlatinum/linux-sgx.git
-	cd linux-sgx
+	git clone https://github.com/StanPlatinum/linux-sgx-cat.git
+	cd linux-sgx-cat
 	SGXSDK_Source_Path=`pwd`
 	cd ..
 else
 	echo "SGXSDK already exists!"
 fi
-SGXSDK_Source_Path=`pwd`"/linux-sgx"
+SGXSDK_Source_Path=`pwd`"/linux-sgx-cat"
 
 if [ ! -d "./elfutils" ]
 then
