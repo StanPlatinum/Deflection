@@ -4,6 +4,22 @@ Deflection is an SGX shielding runtime (SGX middleware) that can run nearly unmo
 
 This project is derived from elf-respect (https://github.com/StanPlatinum/elf-respect) and its compiler (https://github.com/StanPlatinum/elf-respect-compiler).
 
+Our paper: Practical and efficient in-enclave verification of Privacy Compliance has been accepted by DSN'21. This research paper highlights the effectiveness of verifying a program's privacy policy within a TEE environment.
+
+```
+@INPROCEEDINGS{deflection,
+  author={Liu, Weijie and Wang, Wenhao and Chen, Hongbo and Wang, XiaoFeng and Lu, Yaosong and Chen, Kai and Wang, Xinyu and Shen, Qintao and Chen, Yi and Tang, Haixu},
+  booktitle={2021 51st Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN)}, 
+  title={Practical and Efficient in-Enclave Verification of Privacy Compliance}, 
+  year={2021},
+  volume={},
+  number={},
+  pages={413-425},
+  keywords={Privacy;Data privacy;Runtime;Software;Generators;Data models;Security;Intel SGX;Confidential Computing;Proof-Carrying Code;Enclave Shielding Runtime},
+  doi={10.1109/DSN48987.2021.00052}}
+```
+Check the paper [here](https://arxiv.org/pdf/2007.10513).
+
 ***
 
 Although SGX can provide strong isolation and integrity assurance, code privacy may raise some concerns when using it in cloud environments.
@@ -32,10 +48,14 @@ The installation paths of other dependencies are in the same directory as cat-sg
 ./install.sh
 ```
 
-### A Hello World example
+### A hello world example
 
 ```
 cd dynamic-loader-checker
 make
 ./app
 ```
+
+### Other examples
+
+More sample applications and benchmarks (e.g., nbench) can be found at `loader/target-program` or `dynamic-loader-checker/target-program`.
