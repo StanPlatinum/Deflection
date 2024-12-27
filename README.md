@@ -1,6 +1,7 @@
-# Deflection (CAT-SGX)
+# Deflection (CAT-SGX): Verifying a program's privacy policy within a TEE environment
 
-Deflection is an SGX shielding runtime (SGX middleware) that can run nearly unmodified C/C++ code securely. Other than Graphene-SGX, SCONE, Occlum, etc., it can protect the code secrecy and data confidentiality at the same time.
+Deflection is an SGX shielding runtime (SGX middleware) that can run nearly unmodified C/C++ code securely. Other than Gramine, SCONE, Occlum, etc., it can protect code secrecy and data confidentiality at the same time.
+It can be used in a TEE-based data capsule framework.
 
 This project is derived from elf-respect (https://github.com/StanPlatinum/elf-respect) and its compiler (https://github.com/StanPlatinum/elf-respect-compiler).
 
@@ -40,9 +41,7 @@ Make sure,
 
 you have an 'SGX machine' (a machine whose CPU supports Intel SGX, with SGX Driver installed, and with SGXSDK installed in /opt/intel);
 
-you have at least 10G memory (Swap could be included) and 100G disk space before having a try. It means probably the most suitable place for having fun with cat-sgx is a satisfiable Linux server machine.
-
-The installation paths of other dependencies are in the same directory as cat-sgx by default.
+you have at least 10G memory (Swap could be included) and 100G disk space before having a try. It means probably the most suitable place for having fun with Deflection is a satisfiable Linux server machine.
 
 ```
 ./install.sh
