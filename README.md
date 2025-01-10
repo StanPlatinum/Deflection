@@ -1,7 +1,11 @@
-# Deflection (CAT-SGX): Verifying a program's privacy policy within a TEE environment
+# Deflection: Verifying a program's privacy policy within a TEE environment
 
-Deflection is an SGX shielding runtime (SGX middleware) that can run nearly unmodified C/C++ code securely. Other than Gramine, SCONE, Occlum, etc., it can protect code secrecy and data confidentiality at the same time.
+Deflection is a TEE shielding runtime (TEE middleware) that can run nearly unmodified C/C++ code securely. Other than Gramine, SCONE, Occlum, etc., it can protect code secrecy and data confidentiality at the same time.
 It can be used in a TEE-based data capsule framework.
+
+Deflection will move to VM-based TEE soon.
+
+*** 
 
 This project is derived from elf-respect (https://github.com/StanPlatinum/elf-respect) and its compiler (https://github.com/StanPlatinum/elf-respect-compiler).
 
